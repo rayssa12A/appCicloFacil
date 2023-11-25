@@ -7,7 +7,7 @@ class CadastroPage extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          'Cadastro',
+          'Cadastroooooooooooooooooooooo',
           style: TextStyle(
             color: Colors.white,
           ),
