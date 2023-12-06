@@ -28,16 +28,13 @@ class Definicoes extends StatelessWidget {
             color: Colors.white, // Defina a cor da seta de voltar aqui
           ),
         ),
-        body: Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              buildTextContainer('Usuário'),
-              buildTextContainer('Análise'),
-              buildTextContainer('Lembrete'),
-              buildTextContainer('Personalizar'),
-            ],
-          ),
+        body: ListView(
+          children: [
+            buildClickableListItem(context, 'Usuário'),
+            buildClickableListItem(context, 'Análise'),
+            buildClickableListItem(context, 'Lembrete'),
+            buildClickableListItem(context, 'Personalizar'),
+          ],
         ),
         bottomNavigationBar: Menu(),
         backgroundColor: Color(0xFFFFD9DD),
@@ -45,21 +42,34 @@ class Definicoes extends StatelessWidget {
     );
   }
 
-  Widget buildTextContainer(String text) {
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 10),
-      padding: EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        color: Color.fromRGBO(255, 238, 238, 1),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Text(
-        text,
-        style: TextStyle(
-          fontSize: 45,
-          color: Color.fromRGBO(117, 8, 21, 1),
+  Widget buildClickableListItem(BuildContext context, String text) {
+    return Column(
+      children: [
+        GestureDetector(
+          onTap: () {
+            // Exemplo: exibir um SnackBar ao clicar
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Clicou em $text'),
+              ),
+            );
+          },
+          child: ListTile(
+            title: Text(
+              text,
+              style: TextStyle(
+                fontSize: 20,
+                color: Color.fromRGBO(117, 8, 21, 1),
+              ),
+            ),
+          ),
         ),
-      ),
+        Divider(
+          color: Color.fromRGBO(117, 8, 21, 1),
+          thickness: 1,
+          height: 0,
+        ),
+      ],
     );
   }
 }

@@ -63,7 +63,7 @@ class LoginPage extends StatelessWidget {
                 decoration: InputDecoration(
                   labelText: 'Senha',
                   labelStyle: TextStyle(
-                    color: Color(
+                    color: Color( 
                         0xFFFFD9DD), // Cor do texto do rótulo quando em foco
                   ),
                   focusedBorder: OutlineInputBorder(
