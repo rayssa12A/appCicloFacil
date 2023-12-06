@@ -1,6 +1,9 @@
+import 'dart:convert';
+import 'package:ciclo_facil/homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
 
 void main() {
   runApp(MyApp());
@@ -23,6 +26,30 @@ class CadastroPage extends StatefulWidget {
 class _CadastroPageState extends State<CadastroPage> {
   PageController _pageController = PageController(initialPage: 0);
   int _currentPage = 0;
+
+  var dados;
+
+  final String url =
+      "http://localhost/flutter/estudaYestuda/proj_ciclo/ciclo_facil/lib/usuario.php";
+
+  Future<void> _listarDados() async {
+    try {
+      final response = await http.get(Uri.parse(url));
+
+      if (response.statusCode == 200) {
+        final map = json.decode(response.body);
+        final usuarios = map["result"];
+        // Faça o que for necessário com os dados
+        this.dados = usuarios;
+      } else {
+        // Lida com códigos de status não esperados, se necessário
+        print('Erro na requisição HTTP: ${response.statusCode}');
+      }
+    } catch (e) {
+      // Lida com exceções, se ocorrerem
+      print('Erro durante a requisição HTTP: $e');
+    }
+  }
 
 //Parte principal e barra linear abaixo
   @override
@@ -129,6 +156,20 @@ class _CadastroPageState extends State<CadastroPage> {
                       primary: Color(0xFFFFD9DD),
                     ),
                   ),
+                if (_currentPage == 2) // Check if it's the last screen
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) => HomePage()));
+                    },
+                    child: Text(
+                      'Salvar',
+                      style: TextStyle(color: Color(0xFF750815)),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Color(0xFFFFD9DD),
+                    ),
+                  ),
               ],
             ),
           ),
@@ -144,7 +185,6 @@ class CadastroScreen extends StatelessWidget {
 
   CadastroScreen({required this.onNext});
 
-//Cadastro dados pessoas abaixo
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -175,7 +215,10 @@ class CadastroScreen extends StatelessWidget {
               ),
             ),
             SizedBox(height: 15),
-            TextFormField(
+            FormBuilderDateTimePicker(
+              name: 'dataNascimento',
+              inputType: InputType.date,
+              format: DateFormat("dd/MM/yyyy"),
               style: TextStyle(
                 color: Color(0xFFFFD9DD),
               ),
@@ -240,6 +283,28 @@ class CadastroScreen extends StatelessWidget {
                 ),
               ),
             ),
+            SizedBox(height: 15),
+            TextFormField(
+              style: TextStyle(
+                color: Color(0xFFFFD9DD),
+              ),
+              decoration: InputDecoration(
+                labelText: 'Confirmar senha',
+                labelStyle: TextStyle(
+                  color: Color(0xFFFFD9DD),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Color(0xFFFFD9DD),
+                  ),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Color(0xFFFFD9DD),
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -282,6 +347,8 @@ class _InformacoesCicloScreenState extends State<InformacoesCicloScreen> {
   @override
   Widget build(BuildContext context) {
     return Center(
+        child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -303,6 +370,7 @@ class _InformacoesCicloScreenState extends State<InformacoesCicloScreen> {
                 selectedRegularidade = value;
               });
             },
+            dropdownColor: Color.fromARGB(255, 204, 66, 82),
             decoration: InputDecoration(
               labelText: 'Seu ciclo é regular ou irregular?',
               labelStyle: TextStyle(
@@ -340,6 +408,7 @@ class _InformacoesCicloScreenState extends State<InformacoesCicloScreen> {
                 selectedMetodoContraceptivo = null;
               });
             },
+            dropdownColor: Color.fromARGB(255, 204, 66, 82),
             decoration: InputDecoration(
               labelText: 'Utiliza métodos contraceptivos?',
               labelStyle: TextStyle(
@@ -376,6 +445,7 @@ class _InformacoesCicloScreenState extends State<InformacoesCicloScreen> {
                   selectedMetodoContraceptivo = value;
                 });
               },
+              dropdownColor: Color.fromARGB(255, 204, 66, 82),
               decoration: InputDecoration(
                 labelText: 'Escolha o método contraceptivo',
                 labelStyle: TextStyle(
@@ -475,7 +545,7 @@ class _InformacoesCicloScreenState extends State<InformacoesCicloScreen> {
           ),
         ],
       ),
-    );
+    ));
   }
 }
 
@@ -490,7 +560,15 @@ class PreferenciasScreen extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text('Conteúdo da tela de preferências'),
+          Text('Página em desenvolvimento '),
+          SizedBox(height: 15),
+          // Adicione um botão "Salvar" no canto inferior direito
+          Align(
+            alignment: Alignment.bottomRight,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+            ),
+          ),
         ],
       ),
     );

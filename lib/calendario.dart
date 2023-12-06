@@ -29,7 +29,7 @@ class Calendario extends StatelessWidget {
             ),
           ),
           body: Center(
-            child: Text('Conteúdo da tela calendário'),
+            child: Text('Página em desenvolimento'),
           ),
           bottomNavigationBar: Menu(),
           backgroundColor: Color(0xFFFFD9DD),
