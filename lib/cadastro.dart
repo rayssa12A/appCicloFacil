@@ -27,30 +27,44 @@ class _CadastroPageState extends State<CadastroPage> {
   PageController _pageController = PageController(initialPage: 0);
   int _currentPage = 0;
 
-  var dados;
+
+  final TextEditingController nomeController = TextEditingController();
+  final TextEditingController dataNascimentoController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController senhaController = TextEditingController();
+  final TextEditingController confirmarSenhaController =
+      TextEditingController();
 
   final String url =
-      "http://localhost/flutter/estudaYestuda/proj_ciclo/ciclo_facil/lib/usuario.php";
+      "http://192.168.18.12/flutter/estudaYestuda/proj_ciclo/ciclo_facil/lib/usuario.php";
 
-  Future<void> _listarDados() async {
-    try {
-      final response = await http.get(Uri.parse(url));
+  Future<void> _salvarDados() async {
+  try {
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({
+        'nome': nomeController.text,
+        'dataNascimento': dataNascimentoController.text,
+        'email': emailController.text,
+        'senha': senhaController.text,
+        'confirmarSenha': confirmarSenhaController.text,
+      }),
+    );
 
-      if (response.statusCode == 200) {
-        final map = json.decode(response.body);
-        final usuarios = map["result"];
-        // Faça o que for necessário com os dados
-        this.dados = usuarios;
-      } else {
-        // Lida com códigos de status não esperados, se necessário
-        print('Erro na requisição HTTP: ${response.statusCode}');
-      }
-    } catch (e) {
-      // Lida com exceções, se ocorrerem
-      print('Erro durante a requisição HTTP: $e');
+    if (response.statusCode == 200) {
+      print('--Sucesso ao enviar dados!');
+    } else {
+      // Lógica de tratamento de erro
+      print('--Erro na requisição HTTP: ${response.statusCode}');
     }
+  } catch (e) {
+    // Lógica de tratamento de exceções
+    print('--Erro durante a requisição HTTP: $e');
   }
-
+}
 //Parte principal e barra linear abaixo
   @override
   Widget build(BuildContext context) {
@@ -159,8 +173,7 @@ class _CadastroPageState extends State<CadastroPage> {
                 if (_currentPage == 2) // Check if it's the last screen
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.pushReplacement(context,
-                          MaterialPageRoute(builder: (context) => HomePage()));
+                      _salvarDados();
                     },
                     child: Text(
                       'Salvar',

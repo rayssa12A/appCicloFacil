@@ -6,6 +6,7 @@ $usuario = 'root';
 $senha = '';
 
 try {
+    // Conectar ao banco de dados
     $pdo = new PDO("mysql:dbname=$banco;host=$host;charset=utf8", "$usuario", "$senha");
     echo "---Conexão bem sucedida com o banco";
 } catch (Exception $e) {
