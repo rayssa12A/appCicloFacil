@@ -60,7 +60,7 @@ class _HomePageState extends State<HomePage> {
             SizedBox(height: 20),
             Container(
               width: 400,
-              height: 350, // Ajuste a altura conforme necessário
+              height: 410, // Ajuste a altura conforme necessário
               decoration: BoxDecoration(
                 color: Color(0xFFFFECEE), // Cor de fundo do calendário
               ),

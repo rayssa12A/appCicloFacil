@@ -27,9 +27,9 @@ class _CadastroPageState extends State<CadastroPage> {
   PageController _pageController = PageController(initialPage: 0);
   int _currentPage = 0;
 
-
   final TextEditingController nomeController = TextEditingController();
-  final TextEditingController dataNascimentoController = TextEditingController();
+  final TextEditingController dataNascimentoController =
+      TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController senhaController = TextEditingController();
   final TextEditingController confirmarSenhaController =
@@ -39,32 +39,33 @@ class _CadastroPageState extends State<CadastroPage> {
       "http://192.168.18.12/flutter/estudaYestuda/proj_ciclo/ciclo_facil/lib/usuario.php";
 
   Future<void> _salvarDados() async {
-  try {
-    final response = await http.post(
-      Uri.parse(url),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: jsonEncode({
-        'nome': nomeController.text,
-        'dataNascimento': dataNascimentoController.text,
-        'email': emailController.text,
-        'senha': senhaController.text,
-        'confirmarSenha': confirmarSenhaController.text,
-      }),
-    );
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          'nome': nomeController.text,
+          'dataNascimento': dataNascimentoController.text,
+          'email': emailController.text,
+          'senha': senhaController.text,
+          'confirmarSenha': confirmarSenhaController.text,
+        }),
+      );
 
-    if (response.statusCode == 200) {
-      print('--Sucesso ao enviar dados!');
-    } else {
-      // Lógica de tratamento de erro
-      print('--Erro na requisição HTTP: ${response.statusCode}');
+      if (response.statusCode == 200) {
+        print('--Sucesso ao enviar dados!');
+      } else {
+        // Lógica de tratamento de erro
+        print('--Erro na requisição HTTP: ${response.statusCode}');
+      }
+    } catch (e) {
+      // Lógica de tratamento de exceções
+      print('--Erro durante a requisição HTTP: $e');
     }
-  } catch (e) {
-    // Lógica de tratamento de exceções
-    print('--Erro durante a requisição HTTP: $e');
   }
-}
+
 //Parte principal e barra linear abaixo
   @override
   Widget build(BuildContext context) {
@@ -174,6 +175,10 @@ class _CadastroPageState extends State<CadastroPage> {
                   ElevatedButton(
                     onPressed: () {
                       _salvarDados();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => HomePage()),
+                      );
                     },
                     child: Text(
                       'Salvar',
